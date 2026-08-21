@@ -2,13 +2,13 @@
 #include <string>
 
 using namespace std;
-  
+
 enum GameActors {
-	Player,
-	Monster,
-	Goal,
-	Floor,
-	Wall
+	EFloor = 0,
+	EWall = 1,
+	EPlayer,
+	EMonster,
+	EGoal
 };
 
 enum Direction {
@@ -28,8 +28,23 @@ public:
 class World
 {
 public:
-	char WorldPlane[10][10];
-	GameActors WorldActorLocation[10][10];
+	GameActors Actors;
+	char Floor = ' ';
+	char Wall = '*';
+	char Player = 'P';
+	char Monster = 'M';
+	char Goal = 'G';
+	char PlaneMap[10][10] = {
+	{ 1,1,1,1,1,1,1,1,1,1 },
+	{ 1,0,0,0,0,0,0,0,0,1 },
+	{ 1,0,0,0,0,0,0,0,0,1 },
+	{ 1,0,0,0,0,0,0,0,0,1 },
+	{ 1,0,0,0,0,0,0,0,0,1 },
+	{ 1,0,0,0,0,0,0,0,0,1 },
+	{ 1,0,0,0,0,0,0,0,0,1 },
+	{ 1,0,0,0,0,0,0,0,0,1 },
+	{ 1,0,0,0,0,0,0,0,0,1 },
+	{ 1,1,1,1,1,1,1,1,1,1 } };
 };
 
 class Pawn
@@ -57,62 +72,100 @@ public:
 	}
 };
 
+class Player : public Pawn
+{
+public:
+	bool bIsGoal;
+	bool bIsDead;
+};
+
+class Monster : public Pawn
+{
+
+};
+
 //func
 
-void PawnMove(char Input, Pawn MovePawn)
+void PawnMove(char Input, Pawn* MovePawn)
 {
+	//옮길 값
+	Direction MoveDirection;
 	switch (Input)
 	{
 	case 'W':
 	case 'w':
-		return Up;
+		MoveDirection = Up;
+		break;
 	case 'S':
 	case 's':
-		return Down;
+		MoveDirection = Down;
+		break;
 	case 'D':
 	case 'd':
-		return Right;
+		MoveDirection = Right;
+		break;
 	case 'A':
 	case 'a':
-		return Left;
+		MoveDirection = Left;
+		break;
 	}
-	//return 0;
+
+	MovePawn->Location = MovePawn->Move(MoveDirection);
 };
 
-void GamePlay()
+void MapDraw(World* PWorld)
+{
+	for (int YCol = 0;
+		YCol < (sizeof(PWorld->PlaneMap[0]) / sizeof(char));
+		YCol++)
+	{
+		for (int XRow = 0;
+			XRow = (sizeof(PWorld->PlaneMap) / sizeof(PWorld->PlaneMap[0]));
+			XRow++)
+		{
+			
+		}
+		cout << endl;
+	}
+
+}
+
+void GamePlay(World* PWorld, )
 {
 	char Input;
-	Direction MoveDirection;
-	
+
 	//맵 드로우
 
 	cout << "W / S / D / A : ";
 	cin >> Input;
-	MoveDirection = PawnMove(Input);
+
 	
 
 
 }
 
-
-
-
-
-
-
-
 int main()
 {
-	World World;
+	//setting
+	World* PWorld = new World;
 
-	Pawn Monster;
-	Pawn Player;
+	Monster* PMonster = new Monster;
+	Player* PPlayer = new Player;
 
-	Monster.Location
+	PPlayer->Location.X= 1;
+	PPlayer->Location.Y = 1;
+	PMonster->Location.X = 6;
+	PMonster->Location.Y = 8;
+
+
+
 
 
 	return 0;
 }
+
+
+
 
 //class Player
 //{
@@ -149,4 +202,24 @@ int main()
 //{
 //public:
 //	char Shape = "*";
+//};
+
+//Direction PawnMove(char Input)
+//{
+//	switch (Input)
+//	{
+//	case 'W':
+//	case 'w':
+//		return Up;
+//	case 'S':
+//	case 's':
+//		return Down;
+//	case 'D':
+//	case 'd':
+//		return Right;
+//	case 'A':
+//	case 'a':
+//		return Left;
+//	}
+//	//return 0;
 //};
